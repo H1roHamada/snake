@@ -1,36 +1,50 @@
+window.onload = function () {
+    document.addEventListener("keydown", control);
+    setInterval(render, 1000 / 60); // 60 FPS
+}
+
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
 
-let box = 32; //кол-во пикселей квадрата
-let score = 0; //счет
-let direction; //переменная для направления
-let newHead; //переменная для увелечения змейки
-
-
-
-let foods = [ //фрукты
+let
+    gameStart = firstKey = false; //начало игры или первая нажатая клавиша
+speed = 3; //начальная скорость змейки
+xv = yv = 0; //скорость
+snakeX = ~~(canvas.width / 2); //положение змейки по X
+snakeY = ~~(canvas.height / 2); //положение змейки по Y
+snakeWidth = snakeHeight = 25; //размер змейки
+foodWidth = foodHeight = 32; //размер еды
+food = [ //еда
     'apple',
     'mango',
     'strawberry',
     'watermelon',
     'pineapple',
     'cheese',
-]
+];
+foodPos = {} //позиция фрукта
+snake = []; //змейка
+tail = 15; //максимальная длина хвоста в начале
+tailSave = 20; //минимальная длина хвоста после самопоедания
+cooldown = false;
+score = 0;
 
-let foodsPos = {} //позиция фрукта
 
-let snake = []; //змея
-snake[0] = {
-    x: 9 * box,
-    y: 10 * box,
+const fruitFill = new Image(); //рисуем фрукт
+randomFruit(food) //выбираем случайный фрукт
+
+
+function itemPos() { //генератор позиции фрукта
+    foodPos = {
+        x: Math.floor((Math.random() * canvas.width)),
+        y: Math.floor((Math.random() * canvas.height)),
+    }
+    if (foodPos.x >= 1248) foodPos.x -= 32; //чтобы фрукт не вылазил за края (ширина)
+    if (foodPos.y >= 608) foodPos.y -= 32; //чтобы фрукт не вылазил за края (высота)
+    console.log(foodPos.x); //!DELETE
+    console.log(foodPos.y); //!DELETE
+    return foodPos;
 }
-
-
-const fruitFill = new Image(); ; //рисуем фрукт
-randomFruit(foods) //выбираем случайный фрукт
-
-const gameFill = new Image(); gameFill.src = '../img/bg.png'; //рисуем игровое поле
-
 
 function randomFruit(arr) { //выбор случайного фрукта
     let random = Math.floor(Math.random() * arr.length);
@@ -40,76 +54,133 @@ function randomFruit(arr) { //выбор случайного фрукта
     return fruit;
 }
 
-function itemPos() {
-    foodsPos = {
-        x: Math.floor((Math.random() * 17 + 1)) * box,
-        y: Math.floor((Math.random() * 15 + 3)) * box,
-    }
-    return foodsPos;
-}
 
 
 
-function control(event) { //кнопки управления
-
-    if (event.keyCode == 37 && direction != 'right') {
-        direction = 'left';
-    }
-
-    else if (event.keyCode == 38 && direction != 'down') {
-        direction = 'up';
-    }
-
-    else if (event.keyCode == 39 && direction != 'left') {
-        direction = 'right';
-    }
-
-    if (event.keyCode == 40 && direction != 'up') {
-        direction = 'down';
-    }
-}
 
 
 
+
+
+
+//game render
 function render() { //функция отрисовки игры
 
-    ctx.drawImage(gameFill, 0, 0);
-    ctx.drawImage(fruitFill, foodsPos.x, foodsPos.y);
+    //render
+    ctx.fillStyle = '#95d842'; //цвет поля
+    ctx.fillRect(0, 0, canvas.width, canvas.height) //положение и размер поля
+    ctx.drawImage(fruitFill, foodPos.x, foodPos.y); //отрисовка фрукта
 
-    for (let i = 0; i < snake.length; i++) { //перебираем массив со змейкой
-        ctx.fillStyle = i == 0 ? 'green' : 'red'; //если элемент в массиве первый(голова), то он зеелного цвета, остальные красного
-        ctx.fillRect(snake[i].x, snake[i].y, box, box); //отрисовка
+    //snake speed
+    snakeX += xv;
+    snakeY += yv;
+
+    //snake teleport
+    if (snakeX > canvas.width) {
+        snakeX = 0;
     }
 
-    let snakeX = snake[0].x; // доп переменная для тела по X
-    let snakeY = snake[0].y; // доп переменная для тела по Y
-
-    if (snake[0].x == foodsPos.x && snake[0].y == foodsPos.y) { //обработчик соприкосновнеия с фруктом
-        score++; //увеличить счет
-        randomFruit(foods); //выбрать фрукт
-        console.log(fruit);
-
-
-    } else {
-        snake.pop() //удаляет последний элемент змейки, чтобы она не была бесконечной, если убрать это, то каждое обнровление экрана змейка будет увеличиваться на 1
+    if (snakeX + snakeWidth < 0) {
+        snakeX = canvas.width;
     }
 
-
-
-    if (direction == 'right') snakeX += box; //направление змейки вправо
-    if (direction == 'left') snakeX -= box; //направление змейки влево
-    if (direction == 'up') snakeY -= box; //направление змейки вверх
-    if (direction == 'down') snakeY += box; //направление змейки вниз
-
-
-
-    let newSnake = { //создание тела змейки
-        x: snakeX,
-        y: snakeY,
+    if (snakeY > canvas.height) {
+        snakeY = 0;
     }
-    snake.unshift(newSnake) //создаем доп ячейку для змейки
 
+    if (snakeY + snakeHeight < 0) {
+        snakeY = canvas.height;
+    }
+
+    //snake render
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = 'green';
+        ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)
+    }
+
+    snake.push({x: snakeX, y: snakeY})
+
+    //tail limit
+    if (snake.length > tail) {
+        snake.shift();
+    }
+
+    //eating
+    
 }
-setInterval(render, 200);
 
-document.addEventListener("keydown", control);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function control(event) { //управление
+    if (!firstKey && [37, 38, 39, 40].indexOf(event.keyCode) > -1) { //проверка, нажата кнопка или нет
+        setTimeout(function () { gameStart = true; }, 1000);
+        firstKey = true;
+    }
+
+    if (cooldown) {
+        return false;
+    }
+
+    if (event.keyCode == 37 && !(xv > 0)) { // влево
+        xv = -speed; yv = 0;
+    }
+
+    if (event.keyCode == 38 && !(yv > 0)) { // вверх
+        xv = 0; yv = -speed;
+    }
+
+    if (event.keyCode == 39 && !(xv < 0)) { // вправо
+        xv = speed; yv = 0;
+    }
+
+    if (event.keyCode == 40 && !(yv < 0)) { // вниз
+        xv = 0; yv = speed;
+    }
+
+    cooldown = true;
+    setTimeout(function () { cooldown = false; }, 100);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
