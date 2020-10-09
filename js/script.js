@@ -49,7 +49,7 @@ function itemPos() { //генератор позиции фрукта
 function randomFruit(arr) { //выбор случайного фрукта
     let random = Math.floor(Math.random() * arr.length);
     fruit = arr[random];
-    fruitFill.src = `img/food/${fruit}.png`;
+    fruitFill.src = `gitimg/food/${fruit}.png`;
     itemPos(); //выбираем случайную позицию
     return fruit;
 }
@@ -130,25 +130,3 @@ function control(event) { //управление
     cooldown = true;
     setTimeout(function () { cooldown = false; }, 100);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
