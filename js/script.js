@@ -7,7 +7,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
 
 let
-    gameStart = firstKey = false; //начало игры или первая нажатая клавиша
+gameStart = firstKey = false; //начало игры или первая нажатая клавиша
 speed = 3; //начальная скорость змейки
 xv = yv = 0; //скорость
 snakeX = ~~(canvas.width / 2); //положение змейки по X
@@ -55,14 +55,6 @@ function randomFruit(arr) { //выбор случайного фрукта
 }
 
 
-
-
-
-
-
-
-
-
 //game render
 function render() { //функция отрисовки игры
 
@@ -98,7 +90,7 @@ function render() { //функция отрисовки игры
         ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)
     }
 
-    snake.push({x: snakeX, y: snakeY})
+    snake.push({ x: snakeX, y: snakeY })
 
     //tail limit
     if (snake.length > tail) {
@@ -106,32 +98,8 @@ function render() { //функция отрисовки игры
     }
 
     //eating
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function control(event) { //управление
     if (!firstKey && [37, 38, 39, 40].indexOf(event.keyCode) > -1) { //проверка, нажата кнопка или нет
