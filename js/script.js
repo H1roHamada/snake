@@ -125,7 +125,7 @@ function startGame() {
         snakeResetLength();
     }
 
-    function snakeEatYoyrself() {
+    function snakeEatYourself() {
         //snake eating yourself
         if (snake.length >= tail && gameStart) {
             // console.log(`snake = ${snake.length}, tail = ${tail}`); //! DELETE
