@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <title>Snake v1.0.0</title>
@@ -11,7 +12,11 @@
 
 <body>
   <div class="game">
-    <div class="header"></div>
+    <div class="header">
+        <div class="score">Score:<span id="score_counter">0</span></div>
+        <button class="pauseBtn">Pause</button>
+        <button class="settingsBtn">Settings</button>
+    </div>
     <canvas id="game" width="1280px" height="640px"></canvas>
   </div>
 

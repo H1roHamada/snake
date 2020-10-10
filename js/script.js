@@ -3,6 +3,7 @@ window.onload = function () {
     setInterval(render, 1000 / 60); // 60 FPS
 }
 
+const SCORE_COUNTER = document.getElementById('score_counter');
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
 
@@ -27,6 +28,7 @@ snake = []; //змейка
 tail = 10; //максимальная длина хвоста в начале
 tailSave = 20; //минимальная длина хвоста после самопоедания
 cooldown = false;
+cooldownTime = 50;
 score = 0;
 
 
@@ -65,7 +67,69 @@ function render() { //функция отрисовки игры
     //snake speed
     snakeX += xv;
     snakeY += yv;
+    snakeTeleport();
+    snakeRender();
+    snakeEatYoyrself();
+    snakeEatFood();
+}
 
+
+
+function snakeRender() {
+    //snake render
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = 'green'; //цвет змейки
+        ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)//положение
+    }
+
+    snake.push({ x: snakeX, y: snakeY, color: ctx.fillStyle })//увеличение длины змейки
+
+    //tail limit
+    snakeResetLength();
+}
+
+function snakeEatYoyrself() {
+    //snake eating yourself
+    if (snake.length >= tail && gameStart) {
+        // console.log(`snake = ${snake.length}, tail = ${tail}`); //! DELETE
+
+        for (let i = snake.length - tailSave; i >= 0; i--) {
+            if (
+                snakeX < (snake[i].x + snakeWidth) &&
+                snakeX + snakeWidth > snake[i].x &&
+                snakeY < (snake[i].y + snakeHeight) &&
+                snakeY + snakeHeight > snake[i].y
+            ) {
+                tail = 10;
+                speed = 3;
+
+            }
+        }
+    }
+    snakeResetLength();
+
+}
+
+function snakeEatFood() {
+    //eating
+    if (
+        snakeX < (foodPos.x + foodWidth) &&
+        snakeX + foodWidth > foodPos.x &&
+        snakeY < (foodPos.y + foodHeight) &&
+        snakeY + foodHeight > foodPos.y
+    ) {
+        // alert(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}, snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
+
+        score++;
+        SCORE_COUNTER.innerText = score;
+        speed += .1;
+        tail += 10;
+
+        randomFruit(food);
+    }
+}
+
+function snakeTeleport() {
     //snake teleport
     if (snakeX > canvas.width) { //если длина змейки по X = длине канваса(snakeX = 1280), правая сторона экрана
         snakeX = 0; // то змейка телепортируется в начало координаты, левая сторона
@@ -81,34 +145,6 @@ function render() { //функция отрисовки игры
 
     if (snakeY + snakeHeight < 0) {// если упирается вниз
         snakeY = canvas.height;
-    }
-
-    //snake render
-    for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = 'green'; //цвет змейки
-        ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)//положение
-    }
-
-    snake.push({ x: snakeX, y: snakeY })//увеличение длины змейки
-
-    //tail limit
-    if (snake.length > tail) { //tail - начальная длина змейки, запускается проверка, чтобы змейка была фиксированной длины
-        snake.shift();//удаляет лишнюю длину из масиива
-    }
-
-    //eating
-    if (
-        snakeX < (foodPos.x + foodWidth) &&
-        snakeX + foodWidth > foodPos.x &&
-        snakeY < (foodPos.y + foodHeight) &&
-        snakeY + foodHeight > foodPos.y
-        ) {
-        // alert(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}, snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
-
-        score++;
-        speed += .1;
-        tail += 10;
-        randomFruit(food);
     }
 }
 
@@ -138,13 +174,20 @@ function control(event) { //управление
         xv = 0; yv = speed;
     }
 
-    if (event.keyCode == 32) {
-        console.log(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}`); //!DELETE
-        console.log('-----------------------------------------------'); //!DELETE
-        console.log(`snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
-    }
+    // if (event.keyCode == 32) {
+    //     console.log(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}`); //!DELETE
+    //     console.log('-----------------------------------------------'); //!DELETE
+    //     console.log(`snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
+    // }
 
     cooldown = true;
-    setTimeout(function () { cooldown = false; }, 100);//защищает от быстрых нажатий, чтобы змейка не вошла сама в себя
-    //пример, двигаюсь влево, если быстро нажать вверх и в право, то змейка войдет сама в себя. min значение - 100
+    setTimeout(function () { cooldown = false; }, `${cooldownTime}`);//защищает от быстрых нажатий, чтобы змейка не вошла сама в себя
+    //пример, двигаюсь влево, если быстро нажать вверх и в право, то змейка войдет сама в себя.
+}
+
+//if snake eat yourself
+function snakeResetLength() {
+    if (snake.length > tail) { //tail - начальная длина змейки, запускается проверка, чтобы змейка была фиксированной длины
+        snake.shift();//удаляет лишнюю длину из масиива
+    }
 }

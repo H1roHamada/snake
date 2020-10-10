@@ -1,19 +1,58 @@
+/*? FONT
+font-family: 'Press Start 2P', cursive;
+*/
+
+button,
+button:active,
+button:focus {
+  outline: none;
+}
+
 .game {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 
 .header {
-    margin-bottom: 20px;
-    width: 1280px;
-    height: 60px;
-    background-color: #277620;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  width: 1280px;
+  height: 60px;
+  background-color: #277620;
+}
+
+.score {
+  width: 450px;
+  font-weight: bold;
+  font-family: 'Press Start 2P', cursive;
+  color: #fff;
+}
+
+.pauseBtn,
+.settingsBtn {
+  font-family: 'Press Start 2P', cursive;
+  color: #277620;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 12px 15px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  transition: background-color .2s linear;
+}
+
+.settingsBtn:hover,
+.pauseBtn:hover {
+  background-color: rgba(255, 255, 255);
 }
 
 body {
-    background-color: #2f8b27;
+  user-select: none;
+  background-color: #2f8b27;
 }
