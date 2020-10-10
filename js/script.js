@@ -41,15 +41,13 @@ function itemPos() { //генератор позиции фрукта
     }
     if (foodPos.x >= 1248) foodPos.x -= 32; //чтобы фрукт не вылазил за края (ширина)
     if (foodPos.y >= 608) foodPos.y -= 32; //чтобы фрукт не вылазил за края (высота)
-    console.log(foodPos.x); //!DELETE
-    console.log(foodPos.y); //!DELETE
     return foodPos;
 }
 
 function randomFruit(arr) { //выбор случайного фрукта
     let random = Math.floor(Math.random() * arr.length);
     fruit = arr[random];
-    fruitFill.src = `gitimg/food/${fruit}.png`;
+    fruitFill.src = `img/food/${fruit}.png`;
     itemPos(); //выбираем случайную позицию
     return fruit;
 }
@@ -68,33 +66,33 @@ function render() { //функция отрисовки игры
     snakeY += yv;
 
     //snake teleport
-    if (snakeX > canvas.width) {
-        snakeX = 0;
+    if (snakeX > canvas.width) { //если длина змейки по X = длине канваса(snakeX = 1280), правая сторона экрана
+        snakeX = 0; // то змейка телепортируется в начало координаты, левая сторона
     }
 
-    if (snakeX + snakeWidth < 0) {
-        snakeX = canvas.width;
+    if (snakeX + snakeWidth < 0) { //тоже самое, с левого края
+        snakeX = canvas.width; //телепортируется на X = 1280, правая сторона
     }
 
-    if (snakeY > canvas.height) {
+    if (snakeY > canvas.height) { //если упирается в верх
         snakeY = 0;
     }
 
-    if (snakeY + snakeHeight < 0) {
+    if (snakeY + snakeHeight < 0) {// если упирается вниз
         snakeY = canvas.height;
     }
 
     //snake render
     for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = 'green';
-        ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)
+        ctx.fillStyle = 'green'; //цвет змейки
+        ctx.fillRect(snake[i].x, snake[i].y, snakeWidth, snakeHeight)//положение
     }
 
-    snake.push({ x: snakeX, y: snakeY })
+    snake.push({ x: snakeX, y: snakeY })//увеличение длины змейки
 
     //tail limit
-    if (snake.length > tail) {
-        snake.shift();
+    if (snake.length > tail) { //tail - начальная длина змейки, запускается проверка, чтобы змейка была фиксированной длины
+        snake.shift();//удаляет лишнюю длину из масиива
     }
 
     //eating
@@ -128,5 +126,6 @@ function control(event) { //управление
     }
 
     cooldown = true;
-    setTimeout(function () { cooldown = false; }, 100);
+    setTimeout(function () { cooldown = false; }, 100);//защищает от быстрых нажатий, чтобы змейка не вошла сама в себя
+    //пример, двигаюсь влево, если быстро нажать вверх и в право, то змейка войдет сама в себя. min значение - 100
 }
