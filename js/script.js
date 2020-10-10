@@ -87,7 +87,7 @@ function startGame() {
 
             snakeRender();
             snakeEatFood();
-            snakeEatYoyrself();
+            snakeEatYourself();
             snakeTeleport();
         } else return;
 
