@@ -35,7 +35,7 @@ function startGame() {
     const ctx = canvas.getContext("2d");
 
     let
-        gameStart = firstKey = false; //начало игры или первая нажатая клавиша
+    gameStart = firstKey = false; //начало игры или первая нажатая клавиша
     speed = 3; //начальная скорость змейки
     xv = yv = 0; //скорость
     snakeX = ~~(canvas.width / 2); //положение змейки по X
