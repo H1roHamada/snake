@@ -35,6 +35,7 @@ button:focus {
   color: #fff;
 }
 
+.startBtn,
 .pauseBtn,
 .settingsBtn {
   font-family: 'Press Start 2P', cursive;
@@ -47,12 +48,27 @@ button:focus {
   transition: background-color .2s linear;
 }
 
-.settingsBtn:hover,
-.pauseBtn:hover {
+.startBtn:hover,
+.pauseBtn:hover,
+.settingsBtn:hover {
   background-color: rgba(255, 255, 255);
 }
 
 body {
   user-select: none;
   background-color: #2f8b27;
+}
+
+.pause {
+    background-color: red;
+    color: #fff;
+}
+
+.pause:hover {
+    background-color: red;
+    color: #fff;
+}
+
+canvas {
+    background-color: #000;
 }
