@@ -7,13 +7,13 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
 
 let
-gameStart = firstKey = false; //начало игры или первая нажатая клавиша
+    gameStart = firstKey = false; //начало игры или первая нажатая клавиша
 speed = 3; //начальная скорость змейки
 xv = yv = 0; //скорость
 snakeX = ~~(canvas.width / 2); //положение змейки по X
 snakeY = ~~(canvas.height / 2); //положение змейки по Y
-snakeWidth = snakeHeight = 25; //размер змейки
-foodWidth = foodHeight = 32; //размер еды
+snakeWidth = snakeHeight = 20; //размер змейки
+foodWidth = foodHeight = 22; //размер еды
 food = [ //еда
     'apple',
     'mango',
@@ -24,7 +24,7 @@ food = [ //еда
 ];
 foodPos = {} //позиция фрукта
 snake = []; //змейка
-tail = 15; //максимальная длина хвоста в начале
+tail = 10; //максимальная длина хвоста в начале
 tailSave = 20; //минимальная длина хвоста после самопоедания
 cooldown = false;
 score = 0;
@@ -49,12 +49,14 @@ function randomFruit(arr) { //выбор случайного фрукта
     fruit = arr[random];
     fruitFill.src = `img/food/${fruit}.png`;
     itemPos(); //выбираем случайную позицию
+
     return fruit;
 }
 
 
 //game render
 function render() { //функция отрисовки игры
+
 
     //render
     ctx.fillStyle = '#95d842'; //цвет поля
@@ -96,7 +98,19 @@ function render() { //функция отрисовки игры
     }
 
     //eating
+    if (
+        snakeX < (foodPos.x + foodWidth) &&
+        snakeX + foodWidth > foodPos.x &&
+        snakeY < (foodPos.y + foodHeight) &&
+        snakeY + foodHeight > foodPos.y
+        ) {
+        // alert(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}, snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
 
+        score++;
+        speed += .1;
+        tail += 10;
+        randomFruit(food);
+    }
 }
 
 function control(event) { //управление
@@ -123,6 +137,12 @@ function control(event) { //управление
 
     if (event.keyCode == 40 && !(yv < 0)) { // вниз
         xv = 0; yv = speed;
+    }
+
+    if (event.keyCode == 32) {
+        console.log(`foodPosX = ${foodPos.x} foodPosY = ${foodPos.y}`); //!DELETE
+        console.log('-----------------------------------------------'); //!DELETE
+        console.log(`snakeX = ${snakeX} snakeY = ${snakeY}`); //!DELETE
     }
 
     cooldown = true;
