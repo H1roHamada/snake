@@ -57,7 +57,6 @@ function randomFruit(arr) { //выбор случайного фрукта
 //game render
 function render() { //функция отрисовки игры
 
-
     //render
     ctx.fillStyle = '#95d842'; //цвет поля
     ctx.fillRect(0, 0, canvas.width, canvas.height) //положение и размер поля
