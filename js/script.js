@@ -141,7 +141,6 @@ function startGame() {
                     speed = 3;
                     score = 0;
                     SCORE_COUNTER.innerText = score;
-
                 }
             }
         }
