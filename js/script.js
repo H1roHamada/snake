@@ -3,9 +3,13 @@ window.onload = function () {
     setInterval(render, 1000 / 60); // 60 FPS
 }
 
+const PAUSE_BTN = document.querySelector('.pauseBtn');
+const SETTING_BTN = document.querySelector('.settingsBtn');
 const SCORE_COUNTER = document.getElementById('score_counter');
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
+
+PAUSE_BTN.addEventListener('click', () => alert('Pause'))
 
 let
     gameStart = firstKey = false; //начало игры или первая нажатая клавиша
@@ -30,6 +34,7 @@ tailSave = 20; //минимальная длина хвоста после са�
 cooldown = false;
 cooldownTime = 50;
 score = 0;
+paused = true;
 
 
 const fruitFill = new Image(); //рисуем фрукт
@@ -185,7 +190,6 @@ function control(event) { //управление
     //пример, двигаюсь влево, если быстро нажать вверх и в право, то змейка войдет сама в себя.
 }
 
-//if snake eat yourself
 function snakeResetLength() {
     if (snake.length > tail) { //tail - начальная длина змейки, запускается проверка, чтобы змейка была фиксированной длины
         snake.shift();//удаляет лишнюю длину из масиива
