@@ -1,5 +1,5 @@
 window.onload = function () {
-    let version = '1.0.2';
+    let version = '1.0.3';
 
     const GAME = document.querySelector('.game');
     const GAME_SCREEN = document.querySelector('.game_screen');
