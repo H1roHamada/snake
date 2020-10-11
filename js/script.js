@@ -1,30 +1,74 @@
 window.onload = function () {
+    let version = '1.0.2';
 
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext("2d");
-    const START_BTN = document.querySelector('.startBtn');
-    const SETTING_BTN = document.querySelector('.settingsBtn');
+    //! <div class="header">
+    //! <button class="startBtn">Start</button>
+    //! <button class="settingsBtn">Settings</button>
+    //! </div>
 
-    ctx.fillStyle = "#fff";
-    ctx.font = 'bold 50px sans-serif';
-    ctx.textBaseline = "center";
-    ctx.textAlign = "center";
-    ctx.fillText('Управление на стрелках', 640, 150);
+    //! <button class="main_screen-btn-сontinue inActive" data-btn='ms-сontinue' disabled>Продолжить</button>
 
-    START_BTN.addEventListener('click', () => {
 
-        START_BTN.parentNode.removeChild(START_BTN);
-        pause = false;
-        SETTING_BTN.insertAdjacentHTML('beforeBegin', `
 
-            <div class="score">Score:<span id="score_counter">0</span></div>
-            <button class="pauseBtn">Pause</button>
-
+    const GAME = document.querySelector('.game');
+    const GAME_SCREEN = document.querySelector('.game_screen');
+    GAME_SCREEN.insertAdjacentHTML('afterbegin', `
+    <div class="main_screen">
+        <div class="main_screen-btn">
+            <button class="main_screen-btn-newGame" data-btn='ms-newGame'>Новая игра</button>
+            <!-- <button class="main_screen-btn-settings" data-btn='ms-settings'>Настройки</button> -->
+            <!-- <button class="main_screen-btn-statistics" data-btn='ms-statistics'>Статистика</button> -->
+          </div>
+          <div class="version">v${version}</div>
+      </div>
     `);
-        startGame();
 
-    })
+    const MAIN_SCREEN = document.querySelector('.main_screen');
+    const MAIN_SCREEN_BTN = document.querySelectorAll('.main_screen-btn>button');
+
+    MAIN_SCREEN_BTN.forEach(btn => btn.addEventListener('click', () => {
+        if (btn.dataset.btn == 'ms-newGame') {
+            renderScreen('newGame');
+
+        }
+
+        if (btn.dataset.btn == 'ms-settings') {
+            console.log('settings');
+        }
+
+        if (btn.dataset.btn == 'ms-statistics') {
+            console.log('statistics');
+        }
+    }));
+
+
+
+    function renderScreen(screen) {
+
+        if (screen == 'newGame') {
+            GAME.insertAdjacentHTML('afterbegin', `
+            <div class="header">
+                <div class="score">Score:<span id="score_counter">0</span></div>
+                <button class="pauseBtn">Pause</button>
+            </div>
+            `);
+
+            MAIN_SCREEN.parentNode.removeChild(MAIN_SCREEN);
+            GAME_SCREEN.insertAdjacentHTML('afterbegin', `
+            <canvas id="game" width="1280px" height="640px"></canvas>
+            `)
+            startGame();
+        }
+
+    }
+
+
+
+
 }
+
+
+
 
 function startGame() {
     document.addEventListener("keydown", control);
@@ -35,7 +79,7 @@ function startGame() {
     const ctx = canvas.getContext("2d");
 
     let
-    gameStart = firstKey = false; //начало игры или первая нажатая клавиша
+        gameStart = firstKey = false; //начало игры или первая нажатая клавиша
     speed = 3; //начальная скорость змейки
     xv = yv = 0; //скорость
     snakeX = ~~(canvas.width / 2); //положение змейки по X
@@ -57,6 +101,7 @@ function startGame() {
     cooldown = false;
     cooldownTime = 50;
     score = 0;
+    pause = false;
 
     PAUSE_BTN.addEventListener('click', () => {
         if (pause == true) {
@@ -87,7 +132,7 @@ function startGame() {
 
             snakeRender();
             snakeEatFood();
-            snakeEatYoyrself();
+            snakeEatYourself();
             snakeTeleport();
         } else return;
 
