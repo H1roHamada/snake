@@ -1,15 +1,6 @@
 window.onload = function () {
     let version = '1.0.2';
 
-    //! <div class="header">
-    //! <button class="startBtn">Start</button>
-    //! <button class="settingsBtn">Settings</button>
-    //! </div>
-
-    //! <button class="main_screen-btn-сontinue inActive" data-btn='ms-сontinue' disabled>Продолжить</button>
-
-
-
     const GAME = document.querySelector('.game');
     const GAME_SCREEN = document.querySelector('.game_screen');
     GAME_SCREEN.insertAdjacentHTML('afterbegin', `
@@ -23,42 +14,56 @@ window.onload = function () {
       </div>
     `);
 
+    if (localStorage.getItem('snake') !== null) {
+        document.querySelector('.main_screen-btn').insertAdjacentHTML('afterbegin', `
+        <button class="main_screen-btn-сontinue inActive" data-btn='ms-сontinue'>Продолжить</button>
+        `);
+    }
+
     const MAIN_SCREEN = document.querySelector('.main_screen');
     const MAIN_SCREEN_BTN = document.querySelectorAll('.main_screen-btn>button');
 
     MAIN_SCREEN_BTN.forEach(btn => btn.addEventListener('click', () => {
-        if (btn.dataset.btn == 'ms-newGame') {
-            renderScreen('newGame');
 
+        if (btn.dataset.btn == 'ms-сontinue') {
+            renderScreen('сontinue');
         }
 
+        if (btn.dataset.btn == 'ms-newGame') {
+            renderScreen('newGame');
+        }
         if (btn.dataset.btn == 'ms-settings') {
-            console.log('settings');
+            renderScreen('settings');
         }
 
         if (btn.dataset.btn == 'ms-statistics') {
-            console.log('statistics');
+            renderScreen('statistics');
         }
     }));
 
 
 
     function renderScreen(screen) {
-
-        if (screen == 'newGame') {
-            GAME.insertAdjacentHTML('afterbegin', `
+        GAME.insertAdjacentHTML('afterbegin', `
             <div class="header">
                 <div class="score">Score:<span id="score_counter">0</span></div>
                 <button class="pauseBtn">Pause</button>
             </div>
             `);
 
-            MAIN_SCREEN.parentNode.removeChild(MAIN_SCREEN);
-            GAME_SCREEN.insertAdjacentHTML('afterbegin', `
+        MAIN_SCREEN.parentNode.removeChild(MAIN_SCREEN);
+        GAME_SCREEN.insertAdjacentHTML('afterbegin', `
             <canvas id="game" width="1280px" height="640px"></canvas>
             `)
-            startGame();
+
+        if (screen == 'сontinue') {
+            startGame(screen)
         }
+
+        if (screen == 'newGame') {
+            startGame(screen)
+        }
+
 
     }
 
@@ -70,7 +75,9 @@ window.onload = function () {
 
 
 
-function startGame() {
+function startGame(screen) {
+
+
     document.addEventListener("keydown", control);
     setInterval(updateGame, 1000 / 60); // 60 FPS
     const PAUSE_BTN = document.querySelector('.pauseBtn');
@@ -78,12 +85,44 @@ function startGame() {
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext("2d");
 
+    if (localStorage.getItem('snake') != null && screen == 'сontinue') {
+        load = JSON.parse(localStorage.getItem('snake'));
+        snakeY = load.snakeY;
+        snakeX = load.snakeX;
+        snake = load.snake;
+        speed = load.speed;
+        xv = load.xv;
+        yv = load.yv;
+
+        foodPos = load.foodPos
+        score = load.score;
+        level = load.level;
+        tail = load.tail
+
+        SCORE_COUNTER.innerText = score;
+    }
+
+    else {
+        snakeX = ~~(canvas.width / 2); //положение змейки по X
+        snakeY = ~~(canvas.height / 2); //положение змейки по Y
+        snake = []; //змейка
+        speed = 3; //начальная скорость змейки
+        xv = yv = 0; //скорость
+        foodPos = {} //позиция фрукта
+        score = 0;
+        if (screen == 'newGame') {
+            level = 'level 1'
+        };
+        tail = 10; //максимальная длина хвоста в начале
+        SCORE_COUNTER.innerText = score;
+    }
+
+
+
+
+
     let
         gameStart = firstKey = false; //начало игры или первая нажатая клавиша
-    speed = 3; //начальная скорость змейки
-    xv = yv = 0; //скорость
-    snakeX = ~~(canvas.width / 2); //положение змейки по X
-    snakeY = ~~(canvas.height / 2); //положение змейки по Y
     snakeWidth = snakeHeight = 20; //размер змейки
     foodWidth = foodHeight = 22; //размер еды
     food = [ //еда
@@ -94,14 +133,12 @@ function startGame() {
         'pineapple',
         'cheese',
     ];
-    foodPos = {} //позиция фрукта
-    snake = []; //змейка
-    tail = 10; //максимальная длина хвоста в начале
     tailSave = 20; //минимальная длина хвоста после самопоедания
     cooldown = false;
     cooldownTime = 50;
-    score = 0;
     pause = false;
+
+
 
     PAUSE_BTN.addEventListener('click', () => {
         if (pause == true) {
@@ -115,6 +152,7 @@ function startGame() {
 
     const fruitFill = new Image(); //рисуем фрукт
     randomFruit(food) //выбираем случайный фрукт
+
 
 
     //game render
@@ -134,6 +172,7 @@ function startGame() {
             snakeEatFood();
             snakeEatYourself();
             snakeTeleport();
+            saveGame()
         } else return;
 
     }
@@ -276,5 +315,22 @@ function startGame() {
             snake.shift();//удаляет лишнюю длину из масиива
         }
     }
+}
 
+function saveGame() {
+    let savedGame = {
+        snakeX: snakeX,
+        snakeY: snakeY,
+        snake: snake,
+        speed: speed,
+        xv: xv,
+        yv: yv,
+        foodPos: foodPos,
+        score: score,
+        level: level,
+        tail: tail,
+    }
+
+    let snakeJSON = JSON.stringify(savedGame);
+    localStorage.setItem('snake', snakeJSON);
 }

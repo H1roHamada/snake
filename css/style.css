@@ -98,13 +98,16 @@ button:focus {
   padding: 50px 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
+}
+
+.main_screen-btn button:not(:first-child) {
+    margin-top: 15px;
 }
 
 .main_screen-btn button {
@@ -117,15 +120,15 @@ button:focus {
 }
 
 .version {
-    background: #fff;
-    color: #000;
-    font-size: 22px;
-    position: absolute;
-    bottom: 0;
-    padding: 5px;
-    padding-right: 4px;
-    margin-left: 32px;
-    margin-bottom: 32px;
-    font-weight: 800;
-    align-self: flex-start;
+  background: #fff;
+  color: #000;
+  font-size: 22px;
+  position: absolute;
+  bottom: 0;
+  padding: 5px;
+  padding-right: 4px;
+  margin-left: 32px;
+  margin-bottom: 32px;
+  font-weight: 800;
+  align-self: flex-start;
 }
