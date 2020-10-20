@@ -1,5 +1,6 @@
 ## <a href="https://h1rohamada.github.io/snake/index.html" />Start Game
-# snake game by Hiro v1.0.3
+<<<<<<< HEAD
+# snake game by Hiro v1.0.4
     v1.0.4
     переписан код игры
     добавлено: рекорд, пауза на ESC
@@ -7,6 +8,13 @@
     v1.0.3
     добавлено сохранение/загрузка
 
+=======
+# snake game by Hiro v1.0.3
+
+    v1.0.3
+    добавлено сохранение/загрузка
+
+>>>>>>> d16daf518af41c98a4dcb40b98678df89b320254
     v1.0.2
     Добавлен стартовый экран
 
