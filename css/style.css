@@ -7,10 +7,6 @@ body {
   background-color: #000;
 }
 
-canvas {
-  background-color: #000;
-}
-
 button,
 button:active,
 button:focus {
@@ -37,20 +33,23 @@ button:focus {
   background-color: #277620;
 }
 
-.score {
+.score,
+.record {
   width: 450px;
   font-weight: bold;
   font-family: 'Press Start 2P', cursive;
   color: #fff;
 }
 
+#isChoisedCpty,
+.backTo,
 .startBtn,
 .pauseBtn,
 .settingsBtn,
-.main_screen-btn-сontinue,
-.main_screen-btn-newGame,
-.main_screen-btn-settings,
-.main_screen-btn-statistics {
+.main_menu-btn-сontinue,
+.main_menu-btn-newGame,
+.main_menu-btn-settings,
+.main_menu-btn-statistics {
   font-family: 'Press Start 2P', cursive;
   color: #277620;
   background-color: rgba(255, 255, 255, 0.6);
@@ -61,13 +60,14 @@ button:focus {
   transition: background-color .2s linear;
 }
 
+#isChoisedCpty:hover,
+.backTo:hover,
 .startBtn:hover,
-.pauseBtn:hover,
 .settingsBtn:hover,
-.main_screen-btn-сontinue:hover,
-.main_screen-btn-newGame:hover,
-.main_screen-btn-settings:hover,
-.main_screen-btn-statistics:hover {
+main_menu-btn-сontinue:hover,
+main_menu-btn-newGame:hover,
+main_menu-btn-settings:hover,
+main_menu-btn-statistics:hover {
   background-color: rgba(255, 255, 255);
 }
 
@@ -76,23 +76,26 @@ button:focus {
   color: #fff;
 }
 
-.pause:hover {
+.pauseBtn:hover {
   background-color: red;
   color: #fff;
 }
 
-.main_screen {
+.main_menu {
   position: relative;
-  background-image: url('../img/main_screen.png');
+  /* background-image: url('../img/ main_menu.png'); */
+  background-color: #277620;
   background-repeat: no-repeat;
   background-position: center;
   width: 1280px;
   height: 640px;
 }
 
-.main_screen-btn {
-  background-color: rgba(39, 116, 32, 0.8);
+.settings,
+.main_menu-btn {
+  background-color: rgba(0, 0, 0, 0.5);
   border: 2px solid #277620;
+  border-radius: 15px;
   width: 258px;
   height: 321px;
   padding: 50px 25px;
@@ -106,16 +109,16 @@ button:focus {
   transform: translate(-50%, -50%);
 }
 
-.main_screen-btn button:not(:first-child) {
-    margin-top: 15px;
+.main_menu-btn button:not(:first-child) {
+  margin-top: 15px;
 }
 
-.main_screen-btn button {
+.main_menu-btn button {
   background-color: rgba(255, 255, 255, 1);
   color: #000;
 }
 
-.main_screen-btn button:hover {
+.main_menu-btn button:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -125,10 +128,57 @@ button:focus {
   font-size: 22px;
   position: absolute;
   bottom: 0;
-  padding: 5px;
-  padding-right: 4px;
+  padding: 8px;
   margin-left: 32px;
   margin-bottom: 32px;
   font-weight: 800;
   align-self: flex-start;
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+.settings {
+  padding: 25px;
+  font-family: 'Press Start 2P', cursive;
+  color: #fff;
+  font-size: 13px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 15px;
+  width: 578px;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.changeWindowsColor {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 10px;
+  margin-left: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.complexity {
+  display: flex;
+  flex-direction: column;
+}
+
+.complexity span:not(:first-child):hover {
+  cursor: pointer;
+}
+
+.easy {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.complexity span~.choised {
+  color: greenyellow;
+}
+
+.backTo {
+  width: 120px;
 }
