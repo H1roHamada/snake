@@ -1,6 +1,4 @@
-# <a href="https://h1rohamada.github.io/snake/index.html" />Поиграть
-# snake game by Hiro v1.0.3
-    v1.0.3
+# <a href="https://h1rohamada.github.io/snake/index.html" />Start Game
     добавлено сохранение/загрузка
     
     v1.0.2
