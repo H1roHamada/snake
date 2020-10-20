@@ -13,8 +13,6 @@ export const mainMenu = `
     <div class="main_menu">
         <div class=" main_menu-btn">
             <button class=" main_menu-btn-newGame" data-btn='ms-newGame'>Новая игра</button>
-            <button class=" main_menu-btn-settings" data-btn='ms-settings'>Настройки</button>
-            <button class=" main_menu-btn-statistics" data-btn='ms-statistics'>Статистика</button>
             </div>
 
             <a href="https://github.com/H1roHamada/snake/releases/tag/${version}" target="_blank "class="version">v${version}</a>
