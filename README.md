@@ -1,4 +1,4 @@
-## <a href="https://h1rohamada.github.io/snake/index.html" />Start Game
+## <a href="https://h1rohamada.github.io/snake/index.html" />Start The Game
 # snake game by Hiro v1.0.4
     v1.0.4
     переписан код игры
