@@ -1,8 +1,8 @@
-let canvasW = 1280;
-let canvasH = 640;
+const canvasW = 1280;
+const canvasH = 640;
 
 
-export let gameVar = {
+export const gameVar = {
     settings: {
         darkMode: true,
         complexity: 'easy'
@@ -43,7 +43,7 @@ export let gameVar = {
 
 
 
-export let newGame = {
+export const newGame = {
     snake: {
         snake: [],
         snakeX: ~~(canvasW / 2),
